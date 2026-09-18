@@ -124,20 +124,20 @@
         <!-- Khung lựa chọn (Đồng ý / Suy nghĩ lại) -->
         <div id="choiceSection" class="hidden space-y-4">
             <p class="text-pink-300 font-semibold text-sm mb-4">Hãy chọn câu trả lời của Thoa nhé: 💖</p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative min-h-[100px]">
                 <button onclick="selectChoice('Đồng ý')" 
-                    class="w-full sm:w-1/2 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg hover:shadow-pink-500/40 transition-all duration-200 transform hover:scale-105">
+                    class="w-full sm:w-1/2 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg hover:shadow-pink-500/40 transition-all duration-200 transform hover:scale-105 z-10">
                     ❤️ Đồng ý
                 </button>
 
-                <button id="thinkBtn" onclick="selectChoice('Suy nghĩ lại')" onmouseover="moveButton()" 
+                <button id="thinkBtn" onclick="selectChoice('Suy nghĩ lại')" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" 
                     class="w-full sm:w-1/2 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-bold rounded-xl transition-all duration-200">
                     💭 Suy nghĩ lại
                 </button>
             </div>
         </div>
 
-        <!-- Khung thông báo cảm ơn (Chỉ hiển thị riêng sau khi Thoa đã chọn) -->
+        <!-- Khung thông báo cảm ơn -->
         <div id="responseThanks" class="hidden p-6 bg-pink-500/10 border border-pink-500/30 rounded-2xl shadow-lg text-slate-100 font-semibold text-lg leading-snug flex items-center justify-center gap-3">
             <span>🎉</span>
             <span>Cảm ơn Thoa! Câu trả lời đã được gửi trực tiếp tới tui rồi nhe ❤️</span>
@@ -239,14 +239,20 @@
             });
         }
 
-        function moveButton() {
+        // Tối ưu hàm di chuyển nút cho cả Mobile (Chạm) và PC (Rê chuột)
+        function moveButton(event) {
+            if (event && event.type === 'touchstart') {
+                event.preventDefault(); // Ngăn kích hoạt click ngay ở lần chạm đầu trên điện thoại
+            }
+
             const btn = document.getElementById("thinkBtn");
-            const x = (Math.random() - 0.5) * 40;
-            const y = (Math.random() - 0.5) * 40;
+            const x = (Math.random() - 0.5) * 120;
+            const y = (Math.random() - 0.5) * 80;
+
+            btn.style.transition = "transform 0.2s ease";
             btn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        // Ẩn 2 nút chọn và chỉ hiện duy nhất khung thông báo cảm ơn
         function selectChoice(choice) {
             document.getElementById("choiceSection").classList.add("hidden");
             document.getElementById("responseThanks").classList.remove("hidden");
