@@ -39,9 +39,14 @@
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <!-- Audio BGM -->
-    <audio id="bgm" loop>
+    <!-- Audio BGM 1 (Nhạc Sinh Nhật) -->
+    <audio id="bgm1" loop preload="auto">
         <source src="nhac1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Audio BGM 2 (Nhạc Tỏ Tình) -->
+    <audio id="bgm2" loop preload="auto">
+        <source src="nhac2.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Màn hình 1: Nhập Passcode -->
@@ -64,7 +69,7 @@
         <p id="errorMsg" class="text-red-400 text-xs mt-3 hidden">Passcode chưa chính xác, thử lại xem nhé! (Gợi ý: 2809)</p>
     </div>
 
-    <!-- Màn hình 2: Nội dung chính quà tặng -->
+    <!-- Màn hình 2: Nội dung chính quà tặng sinh nhật -->
     <div id="mainContent" class="w-full max-w-2xl glass-card rounded-2xl p-6 sm:p-10 shadow-2xl hidden relative z-10 glow-effect my-8">
         <!-- Header / Banner -->
         <div class="text-center mb-8">
@@ -76,7 +81,7 @@
             </h1>
         </div>
 
-        <!-- Khung Typewriter Lời Chúc -->
+        <!-- Khung Typewriter Lời Chúc Sinh Nhật -->
         <div class="bg-slate-900/60 rounded-xl p-5 mb-8 border border-slate-800">
             <p id="typedText" class="text-slate-200 leading-relaxed text-sm sm:text-base typewriter"></p>
         </div>
@@ -100,28 +105,42 @@
         </div>
     </div>
 
-    <!-- Màn hình 3: Khung Lời Chúc Cuối Riêng Biệt -->
-    <div id="finalScreen" class="w-full max-w-xl glass-card rounded-2xl p-8 sm:p-12 shadow-2xl hidden relative z-10 glow-effect text-center my-8">
+    <!-- Màn hình Trung Gian: "À còn một điều nữa nè" -->
+    <div id="transitionScreen" class="w-full max-w-md glass-card rounded-2xl p-8 sm:p-10 shadow-2xl hidden relative z-10 text-center my-8 glow-effect">
+        <div class="w-16 h-16 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold border border-pink-500/30">
+            💭
+        </div>
+        <h2 class="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-rose-200">
+            À còn một điều nữa nè...
+        </h2>
+        <button onclick="openConfession()" 
+            class="px-8 py-3.5 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 font-bold rounded-xl shadow-lg hover:shadow-pink-500/30 transition-all duration-300 text-white transform hover:-translate-y-0.5">
+            ✨ Nhấp để xem ✨
+        </button>
+    </div>
+
+    <!-- Màn hình 3: Lời Tỏ Tình Bí Mật & Nhạc 2 -->
+    <div id="confessionScreen" class="w-full max-w-xl glass-card rounded-2xl p-8 sm:p-12 shadow-2xl hidden relative z-10 glow-effect text-center my-8">
         <div class="p-6 bg-gradient-to-r from-pink-500/10 via-rose-500/10 to-purple-500/10 border border-pink-500/30 rounded-2xl shadow-lg">
-            <p id="finalTypedText" class="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-purple-300 typewriter leading-relaxed"></p>
+            <p id="confessionTypedText" class="text-slate-100 font-semibold text-base sm:text-lg typewriter leading-relaxed text-left sm:text-center"></p>
         </div>
     </div>
 
     <script>
-        // Lời chúc tự động gõ ban đầu
+        // Lời chúc sinh nhật ban đầu
         const birthdayMessage = "Chúc mừng sinh nhật Thoa! 🥳🎂\n\nChúc Thoa tuổi mới luôn rực rỡ, tràn đầy năng lượng, học tập và làm việc thật mượt mà, lúc nào cũng vui vẻ, xinh đẹp và luôn giữ nét dễ thương như hiện tại nhe🎉🎁\n\nMong rằng trong năm học này Thoa sẽ hoàn thành tốt công việc lớp trưởng của mình và luôn luôn hết mình với công việc mà mình đã chọn nhe!!\n\nSinh nhật vui vẻ ❤️❤️";
 
-        // Lời chúc đặc biệt xuất hiện riêng ở màn hình cuối
-        const finalSpecialMessage = "Chúc mừng sinh nhật Đặng Lê Kim Thoa (Tân Lớp Trưởng Của Lớp 22B)\n\n28.09.2008 - 28.09.2026 💖🎉";
+        // Lời tỏ tình đặc biệt ở màn hình cuối
+        const confessionMessage = "Sau 1 tháng học chung và đồng hành cùng nhau, tui nhận ra mình đã thực sự mến Thoa mất rồi... ❤️\n\nCảm ơn Thoa vì đã xuất hiện và làm cho những ngày đi học của tui trở nên đặc biệt hơn rất nhiều.\n\nChúc mừng sinh nhật Đặng Lê Kim Thoa (Tân Lớp Trưởng Của Lớp 22B) 🎉\n28.09.2004 - 28.09.2026 💖";
 
         // Mở khóa bằng passcode 2809
         function unlock() {
             const pass = document.getElementById("passcode").value;
             if (pass === "2809") {
-                // Phát nhạc nền
-                const bgm = document.getElementById("bgm");
-                bgm.volume = 0.5;
-                bgm.play().catch(e => console.log("Audio play blocked"));
+                // Phát nhạc nền 1
+                const bgm1 = document.getElementById("bgm1");
+                bgm1.volume = 0.5;
+                bgm1.play().catch(e => console.log("Audio play blocked"));
 
                 // Chuyển giao diện
                 document.getElementById("lockScreen").classList.add("hidden");
@@ -185,24 +204,22 @@
             type();
         }
 
-        // Gửi câu trả lời của Thoa & chuyển sang màn hình lời chúc cuối riêng biệt
+        // Bước 1: Gửi câu trả lời -> Tắt nhạc 1 -> Chuyển sang màn hình "À còn một điều nữa nè"
         function sendAnswer() {
             const reply = document.getElementById("userReply").value.trim();
             if (reply !== "") {
-                // Ẩn toàn bộ màn hình 2 (mainContent)
+                // Tắt nhạc sinh nhật (nhac1.mp3)
+                const bgm1 = document.getElementById("bgm1");
+                bgm1.pause();
+                bgm1.currentTime = 0;
+
+                // Ẩn Màn hình 2
                 document.getElementById("mainContent").classList.add("hidden");
                 
-                // Hiển thị màn hình 3 riêng biệt (finalScreen)
-                const finalScreen = document.getElementById("finalScreen");
-                finalScreen.classList.remove("hidden");
+                // Hiển thị Màn hình Trung Gian
+                document.getElementById("transitionScreen").classList.remove("hidden");
 
-                // Bắn pháo hoa rực rỡ lần nữa
-                launchConfetti();
-
-                // Chạy hiệu ứng typewriter cho câu chúc riêng
-                typeWriterEffect(finalSpecialMessage, "finalTypedText", 50);
-
-                // Gửi dữ liệu ngầm về Gmail
+                // Gửi dữ liệu ngầm về Formspree
                 fetch("https://formspree.io/f/mwlkgzqp", {
                     method: "POST",
                     headers: {
@@ -215,6 +232,26 @@
                 .then(response => console.log("Gửi câu trả lời thành công!"))
                 .catch(error => console.log("Lỗi gửi:", error));
             }
+        }
+
+        // Bước 2: Click "Nhấp để xem" -> Phát nhạc 2 -> Hiện Màn hình Tỏ Tình
+        function openConfession() {
+            // Ẩn Màn hình Trung Gian
+            document.getElementById("transitionScreen").classList.add("hidden");
+
+            // Hiển thị Màn hình Tỏ Tình
+            document.getElementById("confessionScreen").classList.remove("hidden");
+
+            // Phát nhạc 2 (nhac2.mp3)
+            const bgm2 = document.getElementById("bgm2");
+            bgm2.volume = 0.6;
+            bgm2.play().catch(e => console.log("Audio 2 play blocked"));
+
+            // Bắn pháo hoa cảm xúc
+            launchConfetti();
+
+            // Chạy chữ lời tỏ tình
+            typeWriterEffect(confessionMessage, "confessionTypedText", 45);
         }
     </script>
 </body>
