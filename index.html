@@ -25,7 +25,6 @@
         .glow-effect {
             box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
         }
-        /* Style gõ chữ */
         .typewriter {
             border-right: 2px solid #ec4899;
             white-space: pre-wrap;
@@ -49,7 +48,7 @@
         <source src="nhac2.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Màn hình 1: Nhập Passcode -->
+    <!-- Màn hình 1: Passcode -->
     <div id="lockScreen" class="w-full max-w-md glass-card rounded-2xl p-8 text-center shadow-2xl relative z-10">
         <div class="w-16 h-16 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold border border-pink-500/30">
             🎁
@@ -69,9 +68,8 @@
         <p id="errorMsg" class="text-red-400 text-xs mt-3 hidden">Passcode chưa chính xác, thử lại xem nhé! (Gợi ý: 2809)</p>
     </div>
 
-    <!-- Màn hình 2: Nội dung chính quà tặng sinh nhật -->
+    <!-- Màn hình 2: Chúc mừng sinh nhật & Bánh kẹo -->
     <div id="mainContent" class="w-full max-w-2xl glass-card rounded-2xl p-6 sm:p-10 shadow-2xl hidden relative z-10 glow-effect my-8">
-        <!-- Header / Banner -->
         <div class="text-center mb-8">
             <span class="inline-block px-3 py-1 bg-pink-500/10 text-pink-400 border border-pink-500/20 rounded-full text-xs font-semibold mb-3">
                 SPECIAL DAY 28.09 🎉
@@ -81,12 +79,10 @@
             </h1>
         </div>
 
-        <!-- Khung Typewriter Lời Chúc Sinh Nhật -->
         <div class="bg-slate-900/60 rounded-xl p-5 mb-8 border border-slate-800">
             <p id="typedText" class="text-slate-200 leading-relaxed text-sm sm:text-base typewriter"></p>
         </div>
 
-        <!-- Khung Tương Tác / Hỏi Đáp Bánh Kẹo -->
         <div id="interactiveSection" class="border-t border-slate-800 pt-6">
             <h2 class="text-lg font-bold text-pink-300 mb-2 flex items-center gap-2">
                 <span>🍬</span> Thoa thích món quà hay bánh kẹo gì cho dịp này không?
@@ -105,7 +101,7 @@
         </div>
     </div>
 
-    <!-- Màn hình Trung Gian: "À còn một điều nữa nè" -->
+    <!-- Màn hình Trung Gian -->
     <div id="transitionScreen" class="w-full max-w-md glass-card rounded-2xl p-8 sm:p-10 shadow-2xl hidden relative z-10 text-center my-8 glow-effect">
         <div class="w-16 h-16 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold border border-pink-500/30">
             💭
@@ -119,23 +115,21 @@
         </button>
     </div>
 
-    <!-- Màn hình 3: Lời Tỏ Tình Bí Mật & Nút Lựa Chọn -->
+    <!-- Màn hình 3: Lời Tỏ Tình -->
     <div id="confessionScreen" class="w-full max-w-xl glass-card rounded-2xl p-8 sm:p-12 shadow-2xl hidden relative z-10 glow-effect text-center my-8">
         <div class="p-6 bg-gradient-to-r from-pink-500/10 via-rose-500/10 to-purple-500/10 border border-pink-500/30 rounded-2xl shadow-lg mb-8">
             <p id="confessionTypedText" class="text-slate-100 font-medium text-base sm:text-lg typewriter leading-relaxed text-left sm:text-center"></p>
         </div>
 
-        <!-- Khung 2 Nút Chọn (Hiện lên sau khi chạy chữ xong) -->
+        <!-- Khung lựa chọn (Đồng ý / Suy nghĩ lại) -->
         <div id="choiceSection" class="hidden space-y-4">
             <p class="text-pink-300 font-semibold text-sm mb-4">Hãy chọn câu trả lời của Thoa nhé: 💖</p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative">
-                <!-- Nút Đồng ý -->
                 <button onclick="selectChoice('Đồng ý')" 
                     class="w-full sm:w-1/2 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg hover:shadow-pink-500/40 transition-all duration-200 transform hover:scale-105">
                     ❤️ Đồng ý
                 </button>
 
-                <!-- Nút Suy nghĩ lại -->
                 <button id="thinkBtn" onclick="selectChoice('Suy nghĩ lại')" onmouseover="moveButton()" 
                     class="w-full sm:w-1/2 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-bold rounded-xl transition-all duration-200">
                     💭 Suy nghĩ lại
@@ -143,50 +137,39 @@
             </div>
         </div>
 
-        <!-- Thông báo cảm ơn sau khi bấm chọn -->
-        <div id="responseThanks" class="hidden p-4 bg-pink-500/20 border border-pink-500/40 rounded-xl text-pink-200 font-bold text-lg mt-6">
-            🎉 Cảm ơn Thoa! Câu trả lời đã được gửi trực tiếp tới tui rồi nhe ❤️
+        <!-- Khung thông báo cảm ơn (Chỉ hiển thị riêng sau khi Thoa đã chọn) -->
+        <div id="responseThanks" class="hidden p-6 bg-pink-500/10 border border-pink-500/30 rounded-2xl shadow-lg text-slate-100 font-semibold text-lg leading-snug flex items-center justify-center gap-3">
+            <span>🎉</span>
+            <span>Cảm ơn Thoa! Câu trả lời đã được gửi trực tiếp tới tui rồi nhe ❤️</span>
         </div>
     </div>
 
     <script>
-        // Lời chúc sinh nhật ban đầu
         const birthdayMessage = "Chúc mừng sinh nhật Thoa! 🥳🎂\n\nChúc Thoa tuổi mới luôn rực rỡ, tràn đầy năng lượng, học tập và làm việc thật mượt mà, lúc nào cũng vui vẻ, xinh đẹp và luôn giữ nét dễ thương như hiện tại nhe🎉🎁\n\nMong rằng trong năm học này Thoa sẽ hoàn thành tốt công việc lớp trưởng của mình và luôn luôn hết mình với công việc mà mình đã chọn nhe!!\n\nSinh nhật vui vẻ ❤️❤️";
 
-        // Lời tỏ tình chuẩn yêu cầu
         const confessionMessage = "Sau 1 tháng học tập và đồng hành cùng nhau, tui nhận ra Thoa không chỉ là một người bạn học tuyệt vời mà còn là người khiến tui mỉm cười mỗi khi nghĩ đến. Sinh nhật năm nay của Thoa, tui không chỉ muốn chúc Thoa hạnh phúc, mà tui còn muốn là người mang lại hạnh phúc đó cho Thoa. Thoa đồng ý làm người yêu tui nhe?";
 
-        // Mở khóa bằng passcode 2809
         function unlock() {
             const pass = document.getElementById("passcode").value;
             if (pass === "2809") {
-                // Phát nhạc nền 1
                 const bgm1 = document.getElementById("bgm1");
                 bgm1.volume = 0.5;
-                bgm1.play().catch(e => console.log("Audio play blocked"));
+                bgm1.play().catch(e => console.log(e));
 
-                // Chuyển giao diện
                 document.getElementById("lockScreen").classList.add("hidden");
                 document.getElementById("mainContent").classList.remove("hidden");
 
-                // Bắn pháo hoa chào mừng
                 launchConfetti();
-
-                // Chạy hiệu ứng typewriter
                 typeWriterEffect(birthdayMessage, "typedText", 40);
             } else {
                 document.getElementById("errorMsg").classList.remove("hidden");
             }
         }
 
-        // Enter ô passcode
         document.getElementById("passcode").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                unlock();
-            }
+            if (event.key === "Enter") unlock();
         });
 
-        // Hiệu ứng pháo hoa
         function launchConfetti() {
             const duration = 3 * 1000;
             const animationEnd = Date.now() + duration;
@@ -198,10 +181,7 @@
 
             const interval = setInterval(function() {
                 const timeLeft = animationEnd - Date.now();
-
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
-                }
+                if (timeLeft <= 0) return clearInterval(interval);
 
                 const particleCount = 50 * (timeLeft / duration);
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
@@ -209,7 +189,6 @@
             }, 250);
         }
 
-        // Hiệu ứng typewriter
         function typeWriterEffect(text, elementId, speed, callback) {
             let i = 0;
             const element = document.getElementById(elementId);
@@ -227,20 +206,16 @@
             type();
         }
 
-        // Bước 1: Gửi câu trả lời món quà -> Chuyển màn hình trung gian
         function sendAnswer() {
             const reply = document.getElementById("userReply").value.trim();
             if (reply !== "") {
-                // Tắt nhạc 1
                 const bgm1 = document.getElementById("bgm1");
                 bgm1.pause();
                 bgm1.currentTime = 0;
 
-                // Chuyển màn hình
                 document.getElementById("mainContent").classList.add("hidden");
                 document.getElementById("transitionScreen").classList.remove("hidden");
 
-                // Gửi Formspree
                 fetch("https://formspree.io/f/mwlkgzqp", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -249,24 +224,21 @@
             }
         }
 
-        // Bước 2: Bấm "Nhấp để xem" -> Hiện lời tỏ tình + nhạc 2
         function openConfession() {
             document.getElementById("transitionScreen").classList.add("hidden");
             document.getElementById("confessionScreen").classList.remove("hidden");
 
             const bgm2 = document.getElementById("bgm2");
             bgm2.volume = 0.6;
-            bgm2.play().catch(e => console.log("Audio 2 play blocked"));
+            bgm2.play().catch(e => console.log(e));
 
             launchConfetti();
 
-            // Chạy chữ lời tỏ tình, gõ xong hiện 2 nút chọn
             typeWriterEffect(confessionMessage, "confessionTypedText", 45, function() {
                 document.getElementById("choiceSection").classList.remove("hidden");
             });
         }
 
-        // Hiệu ứng di chuyển nhẹ nút "Suy nghĩ lại"
         function moveButton() {
             const btn = document.getElementById("thinkBtn");
             const x = (Math.random() - 0.5) * 40;
@@ -274,7 +246,7 @@
             btn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
-        // Bước 3: Gửi lựa chọn ("Đồng ý" / "Suy nghĩ lại") về Formspree
+        // Ẩn 2 nút chọn và chỉ hiện duy nhất khung thông báo cảm ơn
         function selectChoice(choice) {
             document.getElementById("choiceSection").classList.add("hidden");
             document.getElementById("responseThanks").classList.remove("hidden");
@@ -288,9 +260,7 @@
                     ket_qua_to_tinh: choice,
                     thoi_gian: new Date().toLocaleString("vi-VN")
                 })
-            })
-            .then(res => console.log("Gửi lựa chọn thành công!"))
-            .catch(e => console.log(e));
+            }).catch(e => console.log(e));
         }
     </script>
 </body>
