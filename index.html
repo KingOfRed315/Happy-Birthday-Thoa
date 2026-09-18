@@ -138,11 +138,11 @@
         </div>
     </div>
 
-    <!-- Màn hình 4: Thông báo cảm ơn riêng biệt -->
+    <!-- Màn hình 4: Thông báo cảm ơn với hiệu ứng gõ chữ -->
     <div id="thankYouScreen" class="w-full max-w-lg glass-card rounded-2xl p-8 sm:p-10 shadow-2xl hidden relative z-10 text-center my-8 glow-effect">
-        <div class="p-6 bg-pink-500/10 border border-pink-500/30 rounded-2xl shadow-lg text-slate-100 font-semibold text-base sm:text-lg leading-relaxed flex items-center justify-center gap-3">
-            <span>🎉</span>
-            <span id="thanksText"></span>
+        <div class="p-6 bg-pink-500/10 border border-pink-500/30 rounded-2xl shadow-lg flex items-center justify-center gap-3">
+            <span class="text-2xl">🎉</span>
+            <p id="thanksTypedText" class="text-slate-100 font-semibold text-base sm:text-lg typewriter leading-relaxed text-left sm:text-center"></p>
         </div>
     </div>
 
@@ -256,16 +256,18 @@
 
         function selectChoice(choice) {
             document.getElementById("confessionScreen").classList.add("hidden");
-            
-            // Thay đổi nội dung hiển thị ở Màn hình 4 tùy theo quyết định
-            const thanksElement = document.getElementById("thanksText");
+            document.getElementById("thankYouScreen").classList.remove("hidden");
+
+            // Chọn nội dung lời cảm ơn phù hợp
+            let finalMsg = "";
             if (choice === 'Đồng ý') {
-                thanksElement.innerText = "Cảm ơn Thoa vì đã cho tui là một người mang hạnh phúc đên cho bạn, mong là hai đứa mình sẽ học tập và cùng nhau ra trường sau 4,5 năm nhe ❤️";
+                finalMsg = "Cảm ơn Thoa vì đã cho tui là một người mang hạnh phúc đên cho bạn, mong là hai đứa mình sẽ học tập và cùng nhau ra trường sau 4,5 năm nhe ❤️";
             } else {
-                thanksElement.innerText = "Cảm ơn Thoa, tui sẽ tôn trọng theo quyết định của bạn, nếu sau này có đồng ý thì cứ inbox cho tui nhe ❤️";
+                finalMsg = "Cảm ơn Thoa, tui sẽ tôn trọng theo quyết định của bạn, nếu sau này có đồng ý thì cứ inbox cho tui nhe ❤️";
             }
 
-            document.getElementById("thankYouScreen").classList.remove("hidden");
+            // Chạy hiệu ứng gõ chữ cho câu thông báo
+            typeWriterEffect(finalMsg, "thanksTypedText", 40);
 
             launchConfetti();
 
