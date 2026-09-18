@@ -136,9 +136,11 @@
                 </button>
             </div>
         </div>
+    </div>
 
-        <!-- Khung thông báo cảm ơn -->
-        <div id="responseThanks" class="hidden p-6 bg-pink-500/10 border border-pink-500/30 rounded-2xl shadow-lg text-slate-100 font-semibold text-lg leading-snug flex items-center justify-center gap-3">
+    <!-- Màn hình 4: Thông báo cảm ơn riêng biệt -->
+    <div id="thankYouScreen" class="w-full max-w-md glass-card rounded-2xl p-8 sm:p-10 shadow-2xl hidden relative z-10 text-center my-8 glow-effect">
+        <div class="p-6 bg-pink-500/10 border border-pink-500/30 rounded-2xl shadow-lg text-slate-100 font-semibold text-lg leading-snug flex items-center justify-center gap-3">
             <span>🎉</span>
             <span>Cảm ơn Thoa! Câu trả lời đã được gửi trực tiếp tới tui rồi nhe ❤️</span>
         </div>
@@ -239,10 +241,9 @@
             });
         }
 
-        // Tối ưu hàm di chuyển nút cho cả Mobile (Chạm) và PC (Rê chuột)
         function moveButton(event) {
             if (event && event.type === 'touchstart') {
-                event.preventDefault(); // Ngăn kích hoạt click ngay ở lần chạm đầu trên điện thoại
+                event.preventDefault();
             }
 
             const btn = document.getElementById("thinkBtn");
@@ -253,9 +254,10 @@
             btn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
+        // Ẩn toàn bộ màn hình tỏ tình và hiển thị màn hình cảm ơn riêng biệt
         function selectChoice(choice) {
-            document.getElementById("choiceSection").classList.add("hidden");
-            document.getElementById("responseThanks").classList.remove("hidden");
+            document.getElementById("confessionScreen").classList.add("hidden");
+            document.getElementById("thankYouScreen").classList.remove("hidden");
 
             launchConfetti();
 
