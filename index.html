@@ -119,10 +119,33 @@
         </button>
     </div>
 
-    <!-- Màn hình 3: Lời Tỏ Tình Bí Mật & Nhạc 2 -->
+    <!-- Màn hình 3: Lời Tỏ Tình Bí Mật & Nút Lựa Chọn -->
     <div id="confessionScreen" class="w-full max-w-xl glass-card rounded-2xl p-8 sm:p-12 shadow-2xl hidden relative z-10 glow-effect text-center my-8">
-        <div class="p-6 bg-gradient-to-r from-pink-500/10 via-rose-500/10 to-purple-500/10 border border-pink-500/30 rounded-2xl shadow-lg">
-            <p id="confessionTypedText" class="text-slate-100 font-semibold text-base sm:text-lg typewriter leading-relaxed text-left sm:text-center"></p>
+        <div class="p-6 bg-gradient-to-r from-pink-500/10 via-rose-500/10 to-purple-500/10 border border-pink-500/30 rounded-2xl shadow-lg mb-8">
+            <p id="confessionTypedText" class="text-slate-100 font-medium text-base sm:text-lg typewriter leading-relaxed text-left sm:text-center"></p>
+        </div>
+
+        <!-- Khung 2 Nút Chọn (Hiện lên sau khi chạy chữ xong) -->
+        <div id="choiceSection" class="hidden space-y-4">
+            <p class="text-pink-300 font-semibold text-sm mb-4">Hãy chọn câu trả lời của Thoa nhé: 💖</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 relative">
+                <!-- Nút Đồng ý -->
+                <button onclick="selectChoice('Đồng ý')" 
+                    class="w-full sm:w-1/2 py-3.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg hover:shadow-pink-500/40 transition-all duration-200 transform hover:scale-105">
+                    ❤️ Đồng ý
+                </button>
+
+                <!-- Nút Suy nghĩ lại -->
+                <button id="thinkBtn" onclick="selectChoice('Suy nghĩ lại')" onmouseover="moveButton()" 
+                    class="w-full sm:w-1/2 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-bold rounded-xl transition-all duration-200">
+                    💭 Suy nghĩ lại
+                </button>
+            </div>
+        </div>
+
+        <!-- Thông báo cảm ơn sau khi bấm chọn -->
+        <div id="responseThanks" class="hidden p-4 bg-pink-500/20 border border-pink-500/40 rounded-xl text-pink-200 font-bold text-lg mt-6">
+            🎉 Cảm ơn Thoa! Câu trả lời đã được gửi trực tiếp tới tui rồi nhe ❤️
         </div>
     </div>
 
@@ -130,8 +153,8 @@
         // Lời chúc sinh nhật ban đầu
         const birthdayMessage = "Chúc mừng sinh nhật Thoa! 🥳🎂\n\nChúc Thoa tuổi mới luôn rực rỡ, tràn đầy năng lượng, học tập và làm việc thật mượt mà, lúc nào cũng vui vẻ, xinh đẹp và luôn giữ nét dễ thương như hiện tại nhe🎉🎁\n\nMong rằng trong năm học này Thoa sẽ hoàn thành tốt công việc lớp trưởng của mình và luôn luôn hết mình với công việc mà mình đã chọn nhe!!\n\nSinh nhật vui vẻ ❤️❤️";
 
-        // Lời tỏ tình đặc biệt ở màn hình cuối
-        const confessionMessage = "Sau 1 tháng học chung và đồng hành cùng nhau, tui nhận ra mình đã thực sự mến Thoa mất rồi... ❤️\n\nCảm ơn Thoa vì đã xuất hiện và làm cho những ngày đi học của tui trở nên đặc biệt hơn rất nhiều.\n\nChúc mừng sinh nhật Đặng Lê Kim Thoa (Tân Lớp Trưởng Của Lớp 22B) 🎉\n28.09.2004 - 28.09.2026 💖";
+        // Lời tỏ tình chuẩn yêu cầu
+        const confessionMessage = "Sau 1 tháng học tập và đồng hành cùng nhau, tui nhận ra Thoa không chỉ là một người bạn học tuyệt vời mà còn là người khiến tui mỉm cười mỗi khi nghĩ đến. Sinh nhật năm nay của Thoa, tui không chỉ muốn chúc Thoa hạnh phúc, mà tui còn muốn là người mang lại hạnh phúc đó cho Thoa. Thoa đồng ý làm người yêu tui nhe?";
 
         // Mở khóa bằng passcode 2809
         function unlock() {
@@ -156,7 +179,7 @@
             }
         }
 
-        // Cho phép ấn Enter ở ô passcode
+        // Enter ô passcode
         document.getElementById("passcode").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 unlock();
@@ -204,54 +227,70 @@
             type();
         }
 
-        // Bước 1: Gửi câu trả lời -> Tắt nhạc 1 -> Chuyển sang màn hình "À còn một điều nữa nè"
+        // Bước 1: Gửi câu trả lời món quà -> Chuyển màn hình trung gian
         function sendAnswer() {
             const reply = document.getElementById("userReply").value.trim();
             if (reply !== "") {
-                // Tắt nhạc sinh nhật (nhac1.mp3)
+                // Tắt nhạc 1
                 const bgm1 = document.getElementById("bgm1");
                 bgm1.pause();
                 bgm1.currentTime = 0;
 
-                // Ẩn Màn hình 2
+                // Chuyển màn hình
                 document.getElementById("mainContent").classList.add("hidden");
-                
-                // Hiển thị Màn hình Trung Gian
                 document.getElementById("transitionScreen").classList.remove("hidden");
 
-                // Gửi dữ liệu ngầm về Formspree
+                // Gửi Formspree
                 fetch("https://formspree.io/f/mwlkgzqp", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        cau_tra_loi_cua_Thoa: reply
-                    })
-                })
-                .then(response => console.log("Gửi câu trả lời thành công!"))
-                .catch(error => console.log("Lỗi gửi:", error));
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ mon_qua_thoa_muon: reply })
+                }).catch(e => console.log(e));
             }
         }
 
-        // Bước 2: Click "Nhấp để xem" -> Phát nhạc 2 -> Hiện Màn hình Tỏ Tình
+        // Bước 2: Bấm "Nhấp để xem" -> Hiện lời tỏ tình + nhạc 2
         function openConfession() {
-            // Ẩn Màn hình Trung Gian
             document.getElementById("transitionScreen").classList.add("hidden");
-
-            // Hiển thị Màn hình Tỏ Tình
             document.getElementById("confessionScreen").classList.remove("hidden");
 
-            // Phát nhạc 2 (nhac2.mp3)
             const bgm2 = document.getElementById("bgm2");
             bgm2.volume = 0.6;
             bgm2.play().catch(e => console.log("Audio 2 play blocked"));
 
-            // Bắn pháo hoa cảm xúc
             launchConfetti();
 
-            // Chạy chữ lời tỏ tình
-            typeWriterEffect(confessionMessage, "confessionTypedText", 45);
+            // Chạy chữ lời tỏ tình, gõ xong hiện 2 nút chọn
+            typeWriterEffect(confessionMessage, "confessionTypedText", 45, function() {
+                document.getElementById("choiceSection").classList.remove("hidden");
+            });
+        }
+
+        // Hiệu ứng di chuyển nhẹ nút "Suy nghĩ lại"
+        function moveButton() {
+            const btn = document.getElementById("thinkBtn");
+            const x = (Math.random() - 0.5) * 40;
+            const y = (Math.random() - 0.5) * 40;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Bước 3: Gửi lựa chọn ("Đồng ý" / "Suy nghĩ lại") về Formspree
+        function selectChoice(choice) {
+            document.getElementById("choiceSection").classList.add("hidden");
+            document.getElementById("responseThanks").classList.remove("hidden");
+
+            launchConfetti();
+
+            fetch("https://formspree.io/f/mwlkgzqp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ket_qua_to_tinh: choice,
+                    thoi_gian: new Date().toLocaleString("vi-VN")
+                })
+            })
+            .then(res => console.log("Gửi lựa chọn thành công!"))
+            .catch(e => console.log(e));
         }
     </script>
 </body>
